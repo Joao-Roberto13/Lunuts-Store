@@ -10,14 +10,14 @@ The system is fully user-friendly, enabling anyone to place orders easily withou
 - Admin Panel: django-jazzmin – elegant and functional
 
 ⚡ Main Features
--View and manage available products
--Track customers and their purchases by region
--Add products to the cart, choose quantity and flavor
--Simple and straightforward checkout
--Intuitive interface for any user
+- View and manage available products
+- Track customers and their purchases by region
+- Add products to the cart, choose quantity and flavor
+- Simple and straightforward checkout
+- Intuitive interface for any user
 
 🖱 How to Use
--Access Lunuts Store via a web browser
+- Access Lunuts Store via a web browser
 1. Select the desired quantity and flavor
 2. Add the product to the cart
 3. Provide your contact information
