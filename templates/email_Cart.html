@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart Checkout Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #808F69;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        strong {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h1>Cart Checkout Submission</h1>
+        <p><strong>Cell:</strong> {{ cell }}</p>
+        <p><strong>Price:</strong> {{ price }}</p>
+        <p><strong>Product:</strong>
+            {% if cart_items %}
+                <ul>
+                {% for item in cart_items %}
+                    <li>
+                        {% if item.text %}
+                            {{ item.text }}
+                        {% else %}
+                            {{ item.quantity }}x {{ item.product.title }} ({{ item.product.weight }} - {{ item.product_type }})
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                No items in cart.
+            {% endif %}
+        </p>
+    </div>
+</body>
+</html>

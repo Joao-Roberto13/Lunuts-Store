@@ -1,0 +1,436 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ siteConfig.website_title }}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- para permitir o uso do bootstrap -->
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+
+    <style>
+        .sticky-alert {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 1100; /* Adjust the z-index as needed */
+        }
+
+        /* Toggle button estilo */
+        /* Container principal do nav */
+        .nav-container {
+            display: flex;
+            justify-content: space-between; /* espaço entre nome e toggle */
+            align-items: center;
+            padding: 10px 20px;
+            position: relative;
+        }
+
+        /* Nome do site/usuário */
+        .nav-left .site-name {
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        /* Toggle button */
+        .menu-toggle {
+            display: none; /* só aparece no mobile */
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: transparent; /* ou a mesma cor do header/nav */
+            padding: 5px; /* opcional, aumenta área clicável */
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-light);
+            border-radius: 2px; /* opcional, deixa as barras arredondadas */
+        }
+
+        /* Menu padrão */
+        #nav-list {
+            display: flex;
+            gap: 2rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            #nav-list {
+                display: none;
+                flex-direction: column;
+                background-color: var(--background-medium);
+                padding: 1rem;
+                position: absolute;
+                top: 70px;
+                right: 20px;
+                border-radius: 8px;
+                box-shadow: var(--card-shadow);
+            }
+
+            #nav-list.show {
+                display: flex;
+            }
+        }
+
+    </style>
+    
+</head>
+
+<body>
+    <div class="lunuts-website">
+        <!-- Mensagem apos submeter no contact form -->
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show sticky-alert" role="alert">
+            {% else %}
+                <div class="alert alert-success alert-dismissible fade show sticky-alert" role="alert">
+            {% endif %}
+            {{ message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
+        <!-- ======= Header ======= -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="#home" onclick="window.location.href='/'" class="logo">
+                            <img src="{{ siteConfig.website_logo.url }}" alt="Logo: N/A" style="height: 40px; width: auto;">
+                            {{ siteConfig.website_name }}
+                        </a>
+                    </div>
+
+                    <div class="menu-actions">
+                        <nav class="nav">
+                            <a href="#home">Home</a>
+                            <a href="#products">Produtos</a>
+                            <a href="#about">Sobre</a>
+                            <a href="#contact">Contato</a>
+                        </nav>
+
+                        <div class="header-actions">
+                            <div class="social-icons">
+                                <a href="{{ socialMedia.whatsapp }}" target="_blank" rel="noopener noreferrer" class="whatsapp-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04
+                                        1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 
+                                        1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 
+                                        7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 
+                                        01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 
+                                        9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 
+                                        005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+                                    </svg>
+                                </a>
+                                <a href="{{ socialMedia.instagram }}" target="_blank" rel="noopener noreferrer" class="instagram-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#879156"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram-icon lucide-instagram">
+                                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                                    </svg>
+                                </a>
+                                <!-- Ícone do carrinho -->
+                                <a class="cart-toggle" href="javascript:void(0)" style="text-decoration: none;">                                    
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#879156" 
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                                        <path d="M3.103 6.034h17.794"/>
+                                        <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
+                                    </svg>
+                                    Carrinho
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ======= Dropdown do carrinho (somente um master-container) ======= -->
+        <div class="master-container">
+
+            <!-- Card do Carrinho -->
+            <div class="card cart">
+                <label class="title">🛒Your cart ({{ cart_items|length }})</label>
+                <div class="products">
+                    {% for item in cart_items %}
+                    <div class="product">
+                        <div class="product-header">
+                            <span class="product-title">{{ item.product.title }}</span>
+                            <span class="cart-price">MT {{ item.subtotal }}</span>
+                            <form method="post" action="{% url 'remove_from_cart' item.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="remove-btn">✕</button>
+                            </form>
+                        </div>
+                        <div class="product-details">
+                            <span class="label">Tipo:</span> {{ item.product_type }} | 
+                            <span class="label">Peso:</span> {{ item.product.weight }} | 
+                            <span class="label">Quantidade:</span> {{ item.quantity }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Card de Checkout -->
+            <div class="card checkout">
+                <label class="title">Checkout</label>
+                <form action="{% url 'cart_form' %}" method="post" id="contactForm">
+                    {% csrf_token %}
+
+                    <!-- Enviar o cell -->
+                    <input type="tel" name="cell" id="phone" value="+258 " 
+                    oninput="
+                        // Garante prefixo +258
+                        if(!this.value.startsWith('+258')) this.value = '+258 ';
+                        // Remove tudo que não for número ou espaço (mantém + no início)
+                        this.value = '+258 ' + this.value.substring(5).replace(/[^0-9 ]/g, '');
+                    "class="input_field2" pattern="\+258\s?[0-9 ]{8,12}" required>
+
+                    <div class="details">
+                        <!-- Enviar o preço como hidden -->
+                        <input type="hidden" name="price" value="{{ total }}">
+
+                        <!-- Concatenar produtos numa string -->
+                        <input type="hidden" name="cart_item" value="{% for item in cart_items %}{{ item.quantity }}x {{ item.product.title }} ({{ item.product.weight }} - {{ item.product_type }}){% if not forloop.last %}, {% endif %}{% endfor %}">                   
+                        
+                        <span>Subtotal:</span>
+                        <span>{{ total }}</span>
+
+                        <span>Desconto através de cupons aplicados:</span>
+                        <span>MT 0.0</span>                        
+                    </div>
+                    <div class="checkout--footer">
+                        <label class="price"><sup></sup>{{ total }}</label>
+                        <button type="submit" class="checkout-btn">Checkout</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ======= Hero Section ======= -->
+        <section id="home" class="hero">
+            <div class="hero-background" style="background-image: url({{siteConfig.home_image_url}});"></div>
+            <div class="container">          
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <h2 class="hero-title"> {{ siteConfig.home_title }} </h2>
+                    <p class="" style="transition-delay:.08s"> {{ siteConfig.home_description }} </p>
+                    <a class="btn btn-primary" href="#products">Ver Produtos</a>
+                    <a href="{{ socialMedia.whatsapp }}" class="hero-button">Contacte-nos pelo WhatsApp</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Products Section ======= -->
+        <section id="products" class="products animate-on-scroll">
+            <div class="container">
+                <h2 class="section-title">Nossos Produtos</h2>
+                <div class="products-grid">
+                    {% for p in product %}
+                    <div class="product-card" style="animation-delay: 0.2s;">
+                        <div class="product-image">
+                            <img src="{{ p.image.url }}" alt="{{ p.title }}">
+                        </div>
+                        <h3 class="product-name">{{ p.title }}</h3>
+                        <p class="product-description">{{ p.description }}</p>
+                        <div class="product-info">
+                            <span class="product-weight">{{ p.weight }}</span>
+                            <span class="product-price">MT {{ p.price }}</span>
+                        </div>
+
+                        <form method="post" action="{% url 'add_to_cart' p.id %}">
+                            {% csrf_token %}
+                            <!-- Seleção de tipo do produto -->
+                            <div class="controls">
+                                <div class="radio-input">
+                                    <div class="selector">
+                                        <div class="choice">
+                                            <div>
+                                                <input
+                                                    class="choice-circle"
+                                                    type="radio"
+                                                    name="product_type"
+                                                    value="Normal"
+                                                    checked
+                                                    id="normal{{ forloop.counter }}"
+                                                />
+                                                <div class="ball"></div>
+                                            </div>
+                                            <label for="normal{{ forloop.counter }}" class="choice-name">Normal</label>
+                                        </div>
+
+                                        <div class="choice">
+                                            <div>
+                                                <input
+                                                    class="choice-circle"
+                                                    type="radio"
+                                                    name="product_type"
+                                                    value="Sal"
+                                                    id="sal{{ forloop.counter }}"
+                                                />
+                                                <div class="ball"></div>
+                                            </div>
+                                            <label for="sal{{ forloop.counter }}" class="choice-name">Sal</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Contador de quantidade -->
+                                <div class="card__counter">
+                                    <button type="button" class="card__btn decrement" data-target="{{ p.id }}">-</button>
+                                    <div class="card__counter-score" id="counter-{{ p.id }}">1</div>
+                                    <button type="button" class="card__btn increment" data-target="{{ p.id }}">+</button>
+                                </div>
+
+                                <!-- Input hidden que envia quantidade -->
+                                <input type="hidden" name="quantity" id="quantity-{{ p.id }}" value="1">
+                            </div>
+
+                            <!-- Botão Add to Cart -->
+                            <div class="add-to-cart-container">
+                                <button type="submit" class="product-button">Add to Cart</button>
+                                <div class="cart-toggle">
+                                    <button type="button" class="cart-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9fa66b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="8" cy="21" r="1"/>
+                                            <circle cx="19" cy="21" r="1"/>
+                                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>                                             
+                    </div>
+                    {% endfor %}
+                </div>           
+            </div>
+        </section>
+
+        <!-- ======= About Section ======= -->
+        <section id="about" style="background: var(--lunuts-cream);" >
+            <div class="container about-card" style="background: #ffffff;">
+                <div style="display: grid; gap:1.5rem; grid-template-columns: 1fr 1fr;">
+                    <!-- Coluna 1: História e Valores -->
+                    <div >
+                        <div class="section-head">
+                            <h2 class="section-title">A nossa história</h2>
+                        </div>
+                        <p> {{ siteConfig.about_description }} </p>
+                        {% for sk in skill %}
+                        <div class="pill-list" aria-label="Valores">
+                                {% for item in sk.skill_list %}
+                                    <span class="pill"> {{ item }} </span>
+                                {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Coluna 2: Missão -->
+                    <div>
+                        <div class="card" style="padding:1rem;">
+                            <h3 style="margin-top:0">Missão</h3>
+                            <p class="muted"> {{ siteConfig.mission }} </p>
+                            <a class="btn btn-primary" href="{{ socialMedia.instagram }}" target="_blank" rel="noopener" aria-label="Visitar Instagram">
+                                Siga no Instagram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Frequently Asked Questions Section ======= -->
+        <section class="faq-section" id="faq">
+            <div class="faq-container">
+                <h2 class="faq-title">Perguntas Frequentes</h2>
+
+                {% for faq in faqs %}
+                <div class="faq-item">
+                    <div class="faq-question">
+                    <span> {{ faq.question }} </span>
+                    <span class="icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                    <p> {{ faq.description }} </p>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </section>
+
+        <!-- ======= Contact Section ======= -->
+        <section id="contact" class="contact animate-on-scroll">
+            <div class="container">
+                <h2 class="section-title">Entre em Contato</h2>
+                <div class="contact-content">
+                    <form action="{% url 'contact_form' %}" method="post" class="contact-form" id="contactForm">
+                        {% csrf_token %}
+                        <!-- From Uiverse.io by Maximinodotpy --> 
+                        <div class="form-row">
+                            <div class="inputGroup">
+                                <input type="text" name="name" id="name" required autocomplete="on">
+                                <label for="name">Nome</label>
+                            </div>
+
+                            <div class="inputGroup">
+                                <input type="tel" name="phone" id="phone" autocomplete="on" 
+                                    value="+258" oninput="if(!this.value.startsWith('+258')) this.value = '+258';"
+                                    pattern="\+258[0-9]{9}" required>
+                                <label for="phone">Contacto</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea name="message" placeholder="Mensagem" rows="4" required></textarea>
+                        </div>                        
+                        
+                        <button type="submit" class="form-submit">Enviar</button>
+                    </form>
+
+                    <div class="contact-info">
+                        <!-- From Uiverse.io by zanina-yassine -->  
+                    </div>                    
+                </div>
+            </div>
+        </section>
+
+        <!-- ======= Footer ======= -->
+        <footer class="footer animate-on-scroll">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-nav">
+                        <a href="#home">Home</a>
+                        <a href="#products">Produtos</a>
+                        <a href="#about">Sobre</a>
+                        <a href="#contact">Contato</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="{{ socialMedia.whatsapp }}">WhatsApp</a>
+                        <a href="{{ socialMedia.instagram }}">Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>© 2023 LUNUTS. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'script.js' %}">  </script>
+</body>
+</html>
+
+
